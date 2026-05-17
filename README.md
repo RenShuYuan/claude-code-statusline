@@ -115,6 +115,68 @@ It also reads local files:
 - `~/.claude/.credentials.json` — subscription tier
 - `~/.claude.json` — companion name
 
+## Notification sound (optional)
+
+Play a sound whenever Claude Code finishes a turn. Cross-platform: Windows / macOS / Linux.
+
+### What you get
+
+- `play_sound.py` — cross-platform player. Detects OS and calls PowerShell `SoundPlayer` (Windows), `afplay` (macOS), or `paplay` / `aplay` / `play` (Linux, first one available wins).
+- `sounds/notify_loud.wav` — Windows `notify.wav` amplified 10× (zero clipping). Drop-in ready.
+- `amplify_wav.py` — regenerate the loud WAV from any source at any gain.
+
+### Install
+
+```bash
+mkdir -p ~/.claude/scripts ~/.claude/sounds
+cp play_sound.py ~/.claude/scripts/
+cp sounds/notify_loud.wav ~/.claude/sounds/
+```
+
+### Wire it into `~/.claude/settings.json`
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python ~/.claude/scripts/play_sound.py",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+`async: true` lets the sound play without blocking your next prompt. Restart Claude Code (or open `/hooks` once) to reload.
+
+**Windows note** — Git Bash expands `~` correctly; if your hook shell is PowerShell, swap `~` for the full path (`C:/Users/<YourName>/...`).
+
+**Linux note** — needs one of `paplay` (pulseaudio-utils), `aplay` (alsa-utils), or `play` (sox) on PATH.
+
+### Adjust volume
+
+Re-amplify with a different gain (safe upper bound ≈ 13× for the bundled WAV — beyond that you'll clip):
+
+```bash
+python amplify_wav.py /path/to/source.wav ~/.claude/sounds/notify_loud.wav --gain 8
+```
+
+Or point the hook at a totally different WAV:
+
+```json
+"command": "python ~/.claude/scripts/play_sound.py ~/my-sounds/whatever.wav"
+```
+
+### Attribution
+
+`sounds/notify_loud.wav` is derived from Microsoft Windows' `C:\Windows\Media\notify.wav` by 10× amplitude scaling. Bundled here for personal-use convenience. If you redistribute, regenerate from a CC0 source using `amplify_wav.py`.
+
 ## License
 
 MIT
