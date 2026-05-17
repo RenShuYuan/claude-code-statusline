@@ -3,12 +3,12 @@
 A card-style status line for [Claude Code](https://claude.ai/code) that displays real-time model info, rate limit usage, and context window usage.
 
 ```
-╭─ 🐉  Opus 4.7 ─────────────────────────────────────────╮
+╭─ ❄️  Opus 4.7 ─────────────────────────────────────────╮
 │  effort:max  advisor:Opus 4.7  plan:Max×5  ⏱ 48:23     │
-│  上下文  ▓▓▓░░░░░░░░░░░░  18.4%                         │
-│  5h      ████████░░░░░░  48.0%  ↺ 2h 15m                │
-│  7d      █████░░░░░░░░░  31.0%  ↺ 3d 12h                │
-╰─────────────────────────────────────────────────────────╯
+│  context ▓▓▓░░░░░░░░░░░░  18.4%                        │
+│  5h      ████████░░░░░░  48.0%  ↺ 2h 15m               │
+│  7d      █████░░░░░░░░░  31.0%  ↺ 3d 12h               │
+╰────────────────────────────────────────────────────────╯
 ```
 
 ## What it shows
@@ -97,6 +97,7 @@ Edit the constants at the top of `status_line.py`:
 |----------|---------|--------|
 | `PROGRESS_WIDTH` | `14` | Width of progress bars (characters) |
 | `MIN_BOX_INNER` | `50` | Minimum card inner width |
+| `EMOJI_OVERRIDE` | `"❄️"` | Force a specific emoji in the title. Set to `None` to fall back to the companion-name keyword mapping below. |
 
 The `refreshInterval` (seconds) is set in `settings.json`.
 

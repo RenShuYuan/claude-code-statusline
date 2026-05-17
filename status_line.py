@@ -4,9 +4,9 @@
 Claude Code 状态栏 — 卡片式布局
 数据来源：Claude Code 通过 stdin 注入的 JSON（含实时限额）+ 本地配置文件
 
-  ╭─ 🐉  Opus ─────────────────────────────────────────╮
+  ╭─ ❄️  Opus ─────────────────────────────────────────╮
   │  effort:high  advisor:Opus  plan:Max×5  ⏱ 48:23    │
-  │  上下文  ██░░░░░░░░░░░░  18.4%                      │
+  │  context ██░░░░░░░░░░░░  18.4%                     │
   │  5h      ██████████░░░░  48.0%  ↺ 2h 15m           │
   │  7d      █████░░░░░░░░░  31.0%  ↺ 3d 12h           │
   ╰────────────────────────────────────────────────────╯
@@ -18,8 +18,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 import json, os, time, re, unicodedata
 
 # ══════════════════════════════════════════════════════════
-PROGRESS_WIDTH = 14   # 进度条字符宽度
-MIN_BOX_INNER  = 50   # 卡片最小内宽（字符）
+PROGRESS_WIDTH = 14     # 进度条字符宽度
+MIN_BOX_INNER  = 50     # 卡片最小内宽（字符）
+EMOJI_OVERRIDE = "❄️"   # 设为 None 时回退到按 companion name 关键字自动匹配
 # ══════════════════════════════════════════════════════════
 
 HOME       = os.path.expanduser("~")
@@ -205,7 +206,12 @@ def main():
     comp        = state.get("companion", {})
     comp_name   = comp.get("name", "")
     comp_muted  = state.get("companionMuted", False)
-    emoji       = companion_emoji(comp_name) if (comp_name and not comp_muted) else ""
+    if comp_muted:
+        emoji = ""
+    elif EMOJI_OVERRIDE is not None:
+        emoji = EMOJI_OVERRIDE
+    else:
+        emoji = companion_emoji(comp_name) if comp_name else ""
 
     # ── 标题：伴侣图标 + 模型名 + 会话名 ──────────────────
     title_parts = []
@@ -227,9 +233,9 @@ def main():
     # ── 第二行：上下文窗口（当前对话）+ 会话时长 ──────────
     duration_str = f"  ⏱ {c(format_ms(duration_ms), '90')}" if duration_ms else ""
     if pct_ctx is not None:
-        row2 = f"{c('上下文', '90')}  {progress_bar(pct_ctx, ctx=True)}{duration_str}"
+        row2 = f"{c('context', '90')} {progress_bar(pct_ctx, ctx=True)}{duration_str}"
     else:
-        row2 = f"{c('上下文', '90')}  {c('── 等待首次响应 ──', '90')}{duration_str}"
+        row2 = f"{c('context', '90')} {c('── 等待首次响应 ──', '90')}{duration_str}"
 
     # ── 第三行：5 小时订阅用量 ────────────────────────────
     if pct_5h is not None:
