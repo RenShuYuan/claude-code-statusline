@@ -1,6 +1,9 @@
 # claude-code-statusline
 
-A card-style status line for [Claude Code](https://claude.ai/code) that displays real-time model info, rate limit usage, and context window usage.
+Quality-of-life add-ons for [Claude Code](https://claude.ai/code):
+
+1. **Card-style status line** — model, rate limits, context window, session duration at a glance.
+2. **Notification sound on turn completion** — cross-platform (Windows / macOS / Linux), pre-amplified WAV bundled, regeneratable at any volume. Jump to [Notification sound (optional)](#notification-sound-optional).
 
 ```
 ╭─ ❄️  Opus 4.7 ─────────────────────────────────────────╮
@@ -11,7 +14,7 @@ A card-style status line for [Claude Code](https://claude.ai/code) that displays
 ╰────────────────────────────────────────────────────────╯
 ```
 
-## What it shows
+## What the status line shows
 
 | Row | Content |
 |-----|---------|
